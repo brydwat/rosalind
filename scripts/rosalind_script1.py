@@ -47,6 +47,7 @@ dict1 = {}
 for word in dset.split(' '):
     dict1.setdefault(word, 0)
     dict1[word] += 1
-    
+
+#Prints to console with formatting that fits Rosalind for easy copy paste.    
 for key, value in dict1.items():
     print(f"{key} {value}")
