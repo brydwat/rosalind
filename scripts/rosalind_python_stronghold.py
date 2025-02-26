@@ -61,29 +61,17 @@ print(compDNAstring)
 
 #Fn = Fn-1 + Fn-2
 
-#repr - reproductive age
-#non - non-reproductive age
+# gen[n] = gen[n-1] + k * gen[n-2]
 
-#k = reproductive multiplier
+k = 3 # offspring multiplier, number of new pairs
+n = 5 # number of generations to calculate
+gen = [1, 1]  # Initial 2 generations, entered manually to avoid indexing error.
 
-generations = 5
-k = 3
-repr_count = 0
-non_count = 1
-temp = 0
-
-
-cycle = 1
-while cycle <= generations:
-    print("non-reproductive: " + str(non_count) + " " + " reproductive: " + str(repr_count) + " cycle: " + str(cycle))
-    non_count += (repr_count * k)
-    repr_count += non_count
-    non_count -= non_count
-    cycle +=1
-    
-print(repr_count + non_count)
+# Loop will and calculate next generation based on fibonnaci pattern then append.
+for i in range(2, n):
+    gen.append(gen[i-1] + k * gen[i-2])
 
 
-
+print(gen)
 
 
