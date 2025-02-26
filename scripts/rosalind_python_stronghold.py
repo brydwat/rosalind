@@ -63,8 +63,8 @@ print(compDNAstring)
 
 # gen[n] = gen[n-1] + k * gen[n-2]
 
-k = 3 # offspring multiplier, number of new pairs
-n = 5 # number of generations to calculate
+k = 2 # offspring multiplier, number of new pairs
+n = 33 # number of months to calculate
 gen = [1, 1]  # Initial 2 generations, entered manually to avoid indexing error.
 
 # Loop will and calculate next generation based on fibonnaci pattern then append.
@@ -74,4 +74,45 @@ for i in range(2, n):
 
 print(gen)
 
+### 5 Computing GC Content ###
+# Return the ID of the string with the highest GC content, followed byt the GC content of that string.
 
+fasta_d = {}
+ID_index = []
+compare_d = {}
+
+#FASTA read from .txt
+GCfile = open("data\\rosalind_gc.txt", "r")
+fasta = GCfile.read()
+
+#Parses FASTA sequence identifier and bases into dictionary: fasta_d{} and stores the sequence identifer for further processing in a list: ID_index
+for line in fasta.split("\n"):
+    if ">" in line:
+        line = line.replace(">", "")
+        base_ID = line 
+        fasta_d[base_ID] = ""
+        ID_index.append(line)
+    else:
+        fasta_d[base_ID] += line    
+    
+GCfile.close()
+
+#Using ID_index identifier to cycle through fasta_d values and count GC content in nested loop, then calculates and prints ratio. Adds fasta identifiers and GC ratios to dictionary for later comparison.
+#Optional print features are commented out.
+for i in ID_index:
+    base_counts = {"AT": 0, "GC": 0}
+    for b in fasta_d.get(i): 
+        if b == "A" or b == "T":
+            base_counts["AT"] += 1    
+        elif b =="G" or b == "C":
+            base_counts["GC"] += 1
+    #print("AT: " + str(base_counts["AT"]) + " GC: " + str(base_counts["GC"]))
+    total_base = sum(base_counts.values())
+    GC_ratio = base_counts["GC"] / total_base
+    #print("GC Ratio is: " + str(GC_ratio*100)) 
+    compare_d[i] = GC_ratio
+
+#Compares the GC content in the dictionary compare_d which contains FASTA identifiers and GC ratios. Prints final result for problem as a percentage.
+max_GC = max(compare_d, key = compare_d.get)
+print(max_GC)
+print(compare_d[max_GC]*100)
