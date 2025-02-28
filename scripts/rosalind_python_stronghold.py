@@ -116,3 +116,23 @@ for i in ID_index:
 max_GC = max(compare_d, key = compare_d.get)
 print(max_GC)
 print(compare_d[max_GC]*100)
+
+### Counting Point Mutations
+# Return Hamming distance of two strings.
+
+# Decided to try defining a function for this. 
+# Uses zip() to iterate over two entered arguments and compare each item as a tuple. Counts hamming number if not equal. 
+def compare(a, b):
+    hamming_num = 0    
+    for x, y in zip(a, b):
+        if x != y:
+            hamming_num += 1
+    print(str(hamming_num))
+
+# Opens .txt with two DNA strings, splits, and defines as two strings. Then runs compare() function.
+with open("data\\hamming.txt", "r") as hammingdist:
+    mutstrings = hammingdist.read()
+    mutstrings = mutstrings.split("\n")
+    string_a = mutstrings[0]
+    string_b = mutstrings[1]
+    compare(string_a, string_b)
