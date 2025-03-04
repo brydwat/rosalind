@@ -145,6 +145,7 @@ with open("data\\rosalind_hamm.txt", "r") as hammingdist:
 #---------------------------------------------------------------#    
 ### 7 Mendel's First Law
 # Given three integers representing the number of heterozygous, homozygous dominant, and homozygous recessive, return the probability that two randomly selected mating organism will produce an individual possessing a dominant allele. 
+# Used AI to help with understanding probability calculation.
 
 def dominant_probability(k, m, n):
     total = k + m + n  # Total population
@@ -204,12 +205,40 @@ n = 3
 #translation storage
 protein_string = ""
 
-#translation output
+#translation from codon_tabe{} to printed protein output and not printing Stop codons.
+#would not separate multiple 
 for codon in [RNA_string[i:i+n] for i in range(0, len(RNA_string), n)]:
     x = codon_table[codon]
     if x != "Stop":
         protein_string += x
 
 print(protein_string)
+
+#---------------------------------------------------------------#
+### 9 Finding a Motif in DNA
+# Given a DNA string, return all locations of t as a substring of s.
+
+#sample string and motif
+with open("../data/rosalind_subs.txt", "r") as dna_file:
+    #dna = split.dna_file()
+    x = dna_file
+    print(type(x))
+    dna = "CATCGAGTGAGATCGAGTGATCACAGTCGAGTGGTCGAGTGTCGAGTGTCGAGTGGTAAAATCAATTCGAGTGGCTCGAGTGATCGAGTGTCGAGTGAATGATCGAGTGCATCGAGTGTCGAGTGTCGAGTGCAGCATCGAGTGATCGAGTGAAAGGTCGAGTGTTCCATCGAGTGTTCGAGTGTCGAGTGCTTCGAGTGTCGAGTGGTATCGAGTGTCGAGTGCGACATCGAGTGTCGAGTGTCGAGTGATCGAGTGGTGGGTTGCTTCGGTCCGTCGAGTGTCGAGTGACTCGAGTGGTCGAGTGGGATTCGAGTGTCGAGTGATGGAGTGCTCGAGTGTAGTTTCGAGTGTCGAGTGGGTGTTCGAGTGGAAAGGGCAATCGAGTGTCGAGTGTCGAGTGGACTCGAGTGTCCCGTCGAGTGGTCGAGTGTGTCGAGTGATCGAGTGTTCGAGTGAGGGTCGAGTGTCCGTCGAGTGTCGAGTGTCGAGTGAATTCGAGTGTGCGCTTCGAGTGTCGAGTGGGTAGTCGAGTGTTCGAGTGCTCGAGTGGCCTCGAGTGCAACTCGAGTGTCGAGTGTCGAGTGCGATCGAGTGCACTTCGAGTGCGTATTCGAGTGTTCGAGTGTCGAGTGTCGAGTGATCGAGTGTCGAGTGTTCGAGTGTTCGAGTGTTTCGAGTGTTCGAGTGGTGAGTCCTCGAGTGAACCCGTTAAATCCCTCATTCGAGTGTCGAGTGTCGAGTGTCGAGTGCTTTTCGAGTGATCCTATGTCGAGTGGTCGAGTGTCGAGTGCTCGAGTGACAAGTCGAGTGCTCGAGTGGAGTCGAGTGTCGAGTGATCGAGTGTCGAGTGTCGAGTGATCGAGTGACTCGAGTGGGAATCGAGTGGGGCTCGAGTGGTCGAGTGAGGACTATTCGAGTG"
+    motif = "TCGAGTGTC"
+    start_pos = []
+    print(type(dna_file))
+    #print(repr(dna_file))
     
+    for line in dna_file:
+        print(repr(line))
+#loop to search the DNA for a range of indexes the length of the motif + 1 to factor for base-1 indexing.
+#then appends starting position to start_pos list
+for i in range(len(dna) - len(motif) + 1):
+    if dna[i:i + len(motif)] == motif:
+        start_pos.append(i + 1)
+        
+#srint list as string to fit Rosalind format.
+print(' '.join(map(str, start_pos)))
+
+
 
