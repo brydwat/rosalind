@@ -8,8 +8,8 @@ Python Stronghold scripts
 AI usage statement:
     ChatGPT and Google AI (through google's search engine) were used in lieu of searching documentation. No code was written but to understand functions and methods, I primarily used these to search or identify. 
 """
-
-#1 Counting DNA Nucleotides
+#---------------------------------------------------------------#
+###1 Counting DNA Nucleotides
 string = "CCGGGTGCAGACTCTGAGAATGGGCCACGCGCCCTTCCCGTAAAAAGGTTAGGTAGGTGGCGCGTGACCCGAAGTGTCATGCACCCATAATACTCTTGGCGCTGACATTAAAGAATATTACGGGTAGCAAGCGTCTGGCCCTAACCCTCACGGTGATCGTAGCCCGGAAGTTTCGCTCGCAACGATTGCAAGCAGGAGGGATCTTACTAATAAAGGAAGGGGGTCCGAGACTGGATTAGAAATTCCTCTGCGACTTCTAGGTGGAATAAACTAAAGTACTTTTTCGCCGCTGACCACGACCGCAGGTTAGTCCTACCCACGAAGATAATCGACGGCGGCGCCCGATGAGGTCTACTAGATCTAAACATAGTGGACAGCTTAATGTTGGTTCAAATTCGTTGGTAACATATGTCAGGCAGCAAGACGGAAGTGTACGTCGAGCAAAAGGCCCTGAACGACAACGAAGAACTTTATACTATGATTAACAAGCAAGGGTGAGATGAGAGGAGACGGACACGCCGAAAAATTTCATCTACGTAGATAGTCGGCCTGCGGAAGAGAGCTTTTGTGAGGGGTTTTATATATCAGATTCGCATCAATGCTATGTTCTACAAAATCACGAGTTAGCAATCAGCAATAAGCGAAGGTTCCCTTGTGTCATCACCCCAACACAAAAATGGGTAGTAGTGACTGCTGCGGAGATTATGGGCACTAGAAGGACTTAGAATACATAGCGCACAAGTAAGTTCCATAGGTGCCCGTAGTACGGCGCTAAGGTTCCATCGCATTCTATTCGGATCCCAGGTGTGAAACCATGTGCCCCT"
 
 counts = {"A": 0, "C": 0, "G": 0, "T": 0}
@@ -26,7 +26,8 @@ for i in string:
 
 print(counts)
 
-#2 Transcribing DNA to RNA
+#---------------------------------------------------------------#
+###2 Transcribing DNA to RNA
 
 DNAstring = "TGATTCC"
 RNAstring = ""
@@ -39,7 +40,8 @@ for i in DNAstring:
 
 print(RNAstring)
 
-#3 Complementing a Strand of DNA
+#---------------------------------------------------------------#
+###3 Complementing a Strand of DNA
 
 DNAstring = "GCCCGAGATTTTCTGCAGTCGCACAACCCTTCCTGTTACGCCAACTGAAGGGGCTCTATGACTGTCGTACGAACCAGGGGCAAGCATGATAAGCGGAATGTAGCACGGTCAGGGGTATGGTCAGGCTGTCCAGTAGACAACGCTAACAATCCCTTAACTCTCTTACTTGCACGGCCACAGTCGTACGCACACCTGGCGAATAACCGTGGACTCTTGCGTCCGTGTATATTTGTTGGTGTACGTACGCCGCGTGCGTGGGAAATAGCCTTCGATTAGATAAGACCGATCGTGTCCTCCGTCGTGTGTTAAACTGACCTTACCTTAAGGAAGGGACGCCGAACTCGGGCTCATCGGATAGAAGCTCTAACGGCAGATCCTAAAGTCTACCTTATAGACCGTGATATAGCCCAATTCCTCGATTGATGCGTCGTGTCTCTTGTTCCAACTTTAGTGTCAATGCATCGCACGTCCATTCTCCAAGTCGTCTTCCATCATCGGTTGGGGAGCCATATACATGCATACCGTCTGGTTCCAGGAGGGGGGGACACTGGGCGCCTTCCTACATGTTCACAACTTAAAAACTATTTTAAATATGAGCTCGCAGTTTAGGTGTAACAGACATACCCCAGCTGTCATTGCTTCGGTTCGTTTGAAGCATGGAACGATGTACGACTGTGCGGATGTAGTTAACATTATAAGCGAGAACTTCCGGTGGTCTAATAGATAATCGGCCGTTTGAGGTCGGCCGATACGGGTGCCACTAAGTCGCTTTTCGGGTCCTCATCATTAGGGATTCCCCAATGGACATTAGCATTCCCACCCAACTGAGGGGACGTAGCGGCACAGTAACTCGAATGGATTGGACACGCGGAATACGGCACTGAAACGCTCTGGTATCGTAAAACAAGAAGAAGCTAAACAGTGATAGATCGAAGCACGCAATGTCTTCGTCTGTACGACTTCAGAATCCGGGTTACGGCCTGC"
 revstring = DNAstring[::-1]
@@ -57,7 +59,8 @@ for i in revstring:
 
 print(compDNAstring)
 
-#4 Rabbits and Recurrence Relations
+#---------------------------------------------------------------#
+###4 Rabbits and Recurrence Relations
 
 #Fn = Fn-1 + Fn-2
 
@@ -74,6 +77,7 @@ for i in range(2, n):
 
 print(gen)
 
+#---------------------------------------------------------------#
 ### 5 Computing GC Content ###
 # Return the ID of the string with the highest GC content, followed byt the GC content of that string.
 
@@ -117,7 +121,8 @@ max_GC = max(compare_d, key = compare_d.get)
 print(max_GC)
 print(compare_d[max_GC]*100)
 
-### Counting Point Mutations
+#---------------------------------------------------------------#
+### 6 Counting Point Mutations
 # Return Hamming distance of two strings.
 
 # Decided to try defining a function for this. 
@@ -130,9 +135,81 @@ def compare(a, b):
     print(str(hamming_num))
 
 # Opens .txt with two DNA strings, splits, and defines as two strings. Then runs compare() function.
-with open("data\\hamming.txt", "r") as hammingdist:
+with open("data\\rosalind_hamm.txt", "r") as hammingdist:
     mutstrings = hammingdist.read()
     mutstrings = mutstrings.split("\n")
     string_a = mutstrings[0]
     string_b = mutstrings[1]
     compare(string_a, string_b)
+
+#---------------------------------------------------------------#    
+### 7 Mendel's First Law
+# Given three integers representing the number of heterozygous, homozygous dominant, and homozygous recessive, return the probability that two randomly selected mating organism will produce an individual possessing a dominant allele. 
+
+def dominant_probability(k, m, n):
+    total = k + m + n  # Total population
+    
+    #I couldn't think of how to do this except by writing the variations out explicitly. 
+    
+    # Probabilities of selecting each pair
+    P_kk = (k / total) * ((k - 1) / (total - 1))
+    P_km = (k / total) * (m / (total - 1)) * 2
+    P_kn = (k / total) * (n / (total - 1)) * 2
+    P_mm = (m / total) * ((m - 1) / (total - 1))
+    P_mn = (m / total) * (n / (total - 1)) * 2
+    P_nn = (n / total) * ((n - 1) / (total - 1))
+    
+    # Probabilities of dominant allele inheritance
+    P_offspring = (
+        P_kk * 1.0 +  # 100% chance
+        P_km * 1.0 +  # 100% chance
+        P_kn * 1.0 +  # 100% chance
+        P_mm * 0.75 + # 75% chance
+        P_mn * 0.5 +  # 50% chance
+        P_nn * 0.0    # 0% chance
+    )
+    
+    return P_offspring
+
+# Example population:
+k, m, n = 21, 26, 15
+print(dominant_probability(k, m, n))
+
+#---------------------------------------------------------------#
+### 8 Translating RNA to Protein
+# Given an RNA string, return the protein string from codons.
+
+import re
+
+#convert codon table to useable dictionary. 
+#first for loop is text parsing into codons[] list. 2nd is split codon and proteing code into dictionary key/value pair.
+with open("data/codon_table.txt", "r") as codons_file:
+    codon_file = codons_file.read().strip().split("\n")
+    codons = []
+    for line in codon_file:
+        code = re.split(r'\s{2,}', line)
+        codons.extend(code)
+   
+    codon_table = {}
+    
+    for rna in codons:
+        key, value = rna.split()
+        codon_table[key] = value
+
+
+#input string and codon length. Modify later to import string from file.
+RNA_string = "AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA"
+n = 3
+
+#translation storage
+protein_string = ""
+
+#translation output
+for codon in [RNA_string[i:i+n] for i in range(0, len(RNA_string), n)]:
+    x = codon_table[codon]
+    if x != "Stop":
+        protein_string += x
+
+print(protein_string)
+    
+
