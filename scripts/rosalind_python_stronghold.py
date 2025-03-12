@@ -218,19 +218,13 @@ print(protein_string)
 ### 9 Finding a Motif in DNA
 # Given a DNA string, return all locations of t as a substring of s.
 
-#sample string and motif
+#reads file and splits into list where sample string and motif are assigned
 with open("../data/rosalind_subs.txt", "r") as dna_file:
-    #dna = split.dna_file()
-    x = dna_file
-    print(type(x))
-    dna = "CATCGAGTGAGATCGAGTGATCACAGTCGAGTGGTCGAGTGTCGAGTGTCGAGTGGTAAAATCAATTCGAGTGGCTCGAGTGATCGAGTGTCGAGTGAATGATCGAGTGCATCGAGTGTCGAGTGTCGAGTGCAGCATCGAGTGATCGAGTGAAAGGTCGAGTGTTCCATCGAGTGTTCGAGTGTCGAGTGCTTCGAGTGTCGAGTGGTATCGAGTGTCGAGTGCGACATCGAGTGTCGAGTGTCGAGTGATCGAGTGGTGGGTTGCTTCGGTCCGTCGAGTGTCGAGTGACTCGAGTGGTCGAGTGGGATTCGAGTGTCGAGTGATGGAGTGCTCGAGTGTAGTTTCGAGTGTCGAGTGGGTGTTCGAGTGGAAAGGGCAATCGAGTGTCGAGTGTCGAGTGGACTCGAGTGTCCCGTCGAGTGGTCGAGTGTGTCGAGTGATCGAGTGTTCGAGTGAGGGTCGAGTGTCCGTCGAGTGTCGAGTGTCGAGTGAATTCGAGTGTGCGCTTCGAGTGTCGAGTGGGTAGTCGAGTGTTCGAGTGCTCGAGTGGCCTCGAGTGCAACTCGAGTGTCGAGTGTCGAGTGCGATCGAGTGCACTTCGAGTGCGTATTCGAGTGTTCGAGTGTCGAGTGTCGAGTGATCGAGTGTCGAGTGTTCGAGTGTTCGAGTGTTTCGAGTGTTCGAGTGGTGAGTCCTCGAGTGAACCCGTTAAATCCCTCATTCGAGTGTCGAGTGTCGAGTGTCGAGTGCTTTTCGAGTGATCCTATGTCGAGTGGTCGAGTGTCGAGTGCTCGAGTGACAAGTCGAGTGCTCGAGTGGAGTCGAGTGTCGAGTGATCGAGTGTCGAGTGTCGAGTGATCGAGTGACTCGAGTGGGAATCGAGTGGGGCTCGAGTGGTCGAGTGAGGACTATTCGAGTG"
-    motif = "TCGAGTGTC"
+    dna_file = dna_file.read().split("\n")
+    dna = dna_file[0]
+    motif = dna_file[1]
     start_pos = []
-    print(type(dna_file))
-    #print(repr(dna_file))
-    
-    for line in dna_file:
-        print(repr(line))
+
 #loop to search the DNA for a range of indexes the length of the motif + 1 to factor for base-1 indexing.
 #then appends starting position to start_pos list
 for i in range(len(dna) - len(motif) + 1):
@@ -240,5 +234,81 @@ for i in range(len(dna) - len(motif) + 1):
 #srint list as string to fit Rosalind format.
 print(' '.join(map(str, start_pos)))
 
+#---------------------------------------------------------------#
+### 10 Consensus and Profile
+# Given up to 10 DNA strings, return the consensus string and profile matrix. May return multiple consensus strings.
 
+#Lists to store DNA strings and FASTA IDs
+fasta_strings = []
+ID_index = []
 
+#FASTA read from .txt
+with open("data/rosalind_cons.txt", "r") as GCfile:
+    fasta = GCfile.read()
+
+lines = fasta.splitlines()
+
+#String for id in loop and list for sequence in loop.
+current_id = ""
+current_seq = []
+
+#Parses FASTA sequence identifier and bases into dictionary: fasta_d{} and stores the sequence identifer for further processing in a list: ID_index
+for line in lines:
+    if line.startswith(">"):
+        if current_id:
+            fasta_strings.append("".join(current_seq))
+        current_id = line[1:] #Removes ">"..
+        ID_index.append(current_id) #Stores ID.
+        current_seq = [] #Reset sequence list.
+    else:
+        current_seq.append(line.strip()) #Add line to sequence.
+
+#Appends last sequence after loop.
+if current_id:
+    fasta_strings.append("".join(current_seq))
+
+#Organizes strings separated from IDs into a matrix for further processing.
+string_matrix = []
+for string in fasta_strings:
+    nucleotides = []
+    for base in string:
+        nucleotides.append(base)
+    string_matrix.append(nucleotides)
+
+#OPTIONAL commented out to show matrix.
+#for row in string_matrix:
+#    print(' '.join(row))
+
+#Transpose rows to columns using zip
+columns = zip(*string_matrix)
+
+#Determine the most common nucleotide in each column. Concatenates into string of most common and strings of nucleotide counts per column.
+most_common_nucleotides = ""
+A = "A: "
+C = "C: "
+G = "G: "
+T = "T: "
+
+for col in columns:
+    counts = {"A": 0, "C": 0, "G": 0, "T": 0}
+    for i in col:
+        if i == "A":
+            counts["A"] += 1
+        elif i =="C":
+            counts["C"] += 1
+        elif i == "G":
+            counts["G"] += 1
+        elif i == "T":
+            counts["T"] += 1
+    most_common_nucleotides += max(counts, key=lambda key: counts[key])
+    A += (str(counts["A"]) + " ")
+    C += (str(counts["C"]) + " ")
+    G += (str(counts["G"]) + " ")
+    T += (str(counts["T"]) + " ")
+
+#Print consensus sequence followed by counts of each nucleotide at each position in matrix column.
+print(''.join(most_common_nucleotides))
+print(A) 
+print(C)  
+print(G)  
+print(T)
