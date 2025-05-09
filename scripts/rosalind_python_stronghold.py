@@ -312,3 +312,42 @@ print(A)
 print(C)  
 print(G)  
 print(T)
+
+#---------------------------------------------------------------#
+### 11 Mortal Fibonacci Rabbits
+# Given n number of generations and m age of rabbit life, return the number of rabbits extant after n generations.
+
+n = 96 # number of generations
+m = 19 # number of months lived
+# k = 0 # Unused multiplier for multiple pairs of offspring.
+
+# create a dictionary of ages to keep track
+age = {}
+for i in range(m):
+    age.update({str(i+1):0})
+
+# Initial pair
+age['1'] = 1 
+
+for generation in range(1, n):
+    
+    # Count mature rabbits that can reproduce.
+    immature = 0
+    for i in range(2, m + 1):
+        immature += age[str(i)]
+    
+    # Shift rabbits to older age group.
+    updated_age = {}
+    for i in range(m, 1, -1):
+        updated_age[str(i)] = age[str(i - 1)]
+    
+    # Add new immature rabits to youngest age group.
+    updated_age['1'] = immature
+    
+    # Update age dictionary.
+    age = updated_age.copy()
+    
+print(sum(updated_age.values()))
+# holy shit... australia is in danger
+
+
