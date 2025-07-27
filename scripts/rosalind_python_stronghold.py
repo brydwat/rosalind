@@ -350,4 +350,45 @@ for generation in range(1, n):
 print(sum(updated_age.values()))
 # holy shit... australia is in danger
 
+#---------------------------------------------------------------#
+### 12 Overlap Graphs
+# Given: A collection of DNA strings in FASTA format having total length at most 10 kbp.
+# Return: The adjacency list corresponding to O3
+import os
+os.chdir("C:/Users/zhiva/Documents/Coding/Python/Rosalind")
 
+fasta_d = {}
+ID_index = []
+
+#FASTA read from .txt
+GCfile = open("data\\rosalind_grph.txt", "r")
+fasta = GCfile.read()
+
+# Parses FASTA sequence identifier and bases into dictionary: fasta_d{} and stores the sequence identifer for further processing in a list: ID_index
+for line in fasta.split("\n"):
+    if ">" in line:
+        line = line.replace(">", "")
+        base_ID = line 
+        fasta_d[base_ID] = ""
+        ID_index.append(line)
+    else:
+        fasta_d[base_ID] += line  
+
+# list to store tuples for overlap graph.
+overlap_graph = []
+
+# Loop through key:value pairs, outer loop
+for id1, seq1 in fasta_d.items():
+    end = seq1[-3:] # last 3 letters of sequence
+    # inner loop
+    for id2, seq2 in fasta_d.items():
+        if id1 == id2: 
+            continue # skip identical seq IDs
+        
+        start = seq2[:3] # first 3 letters of sequence
+        
+        if end == start:
+            overlap_graph.append((id1, id2))
+            print(id1, id2) # print appended for Rosalind formatting acceptance
+
+            
